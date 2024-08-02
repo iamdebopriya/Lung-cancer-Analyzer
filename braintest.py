@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # Load the trained model
-model = tf.keras.models.load_model('vgg16_model')
+model = tf.keras.models.load_model('vgg16_model.h5')
 
 # Set custom CSS for the Streamlit app
 st.markdown("""
