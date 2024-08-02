@@ -47,7 +47,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Set the title
-st.title("Chest Cancer Classification and Advice")
+st.title("Lung Cancer Classification and Advice")
 
 # Image uploader
 uploaded_file = st.file_uploader("Choose a CT-Scan image...", type=["jpg", "png", "jpeg"])
