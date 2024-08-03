@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import img_to_array
-import pandas as pd
 
 # Define CNN models for knee osteoarthritis and lung cancer detection
 def create_knee_model():
@@ -198,21 +197,14 @@ if task == "Knee Osteoarthritis Severity Prediction":
         ax.set_title('Prediction Probabilities for Knee Osteoarthritis Severity')
         st.pyplot(fig)
 
-        # Pie plot
+        # Pie chart
         st.write("#### Pie Chart of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        wedges, texts, autotexts = ax.pie(
-            severity_prediction[0],
-            labels=knee_classes,
-            autopct='%1.1f%%',
-            colors=['#4b0082', '#6a0dad', '#800080', '#a020f0', '#d8bfd8'],
-            startangle=140
-        )
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.pie(severity_prediction[0], labels=knee_classes, autopct='%1.1f%%', colors=['#f8a5c2', '#ff6b81', '#ff4757', '#ff6348', '#ff7f50'])
         ax.set_title('Prediction Probabilities for Knee Osteoarthritis Severity')
-        plt.setp(autotexts, size=10, weight="bold")
         st.pyplot(fig)
 
-elif task == "Lung Cancer Detection":
+if task == "Lung Cancer Detection":
     st.title("Lung Cancer Detection")
 
     # Image uploader for lung X-ray
@@ -220,25 +212,26 @@ elif task == "Lung Cancer Detection":
 
     if uploaded_lung_file is not None:
         # Preprocess the image
-        image = Image.open(uploaded_lung_file).resize((150, 150))
-        image_array = img_to_array(image) / 255.0
-        image_array = np.expand_dims(image_array, axis=0)
+        image = Image.open(uploaded_lung_file).convert('RGB')  # Convert to RGB
+        image = image.resize((150, 150))
+        image_array = np.array(image) / 255.0
+        image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
 
-        # Predict the lung cancer type
-        lung_prediction = lung_model.predict(image_array)
-        lung_class = lung_classes[np.argmax(lung_prediction)]
+        # Predict the type of lung cancer
+        cancer_prediction = lung_model.predict(image_array)
+        cancer_class = lung_classes[np.argmax(cancer_prediction)]
 
         # Display the uploaded image
         st.image(uploaded_lung_file, caption='Uploaded Lung X-ray Image', use_column_width=True)
-        st.write(f"**Predicted Cancer Type:** {lung_class}")
+        st.write(f"**Predicted Class:** {cancer_class}")
 
-        # Provide advice based on cancer type
-        if lung_class in lung_advice:
-            st.write(f"### Advice for {lung_class}")
-            st.write(f"**Doctors:** {lung_advice[lung_class]['Doctors']}")
-            st.write(f"**Medication:** {lung_advice[lung_class]['Medication']}")
-            st.write(f"**Surgery:** {lung_advice[lung_class]['Surgery']}")
-            st.write(f"**Diets:** {lung_advice[lung_class]['Diets']}")
+        # Provide advice based on lung cancer type
+        if cancer_class in lung_advice:
+            st.write(f"### Advice for {cancer_class}")
+            st.write(f"**Doctors:** {lung_advice[cancer_class]['Doctors']}")
+            st.write(f"**Medication:** {lung_advice[cancer_class]['Medication']}")
+            st.write(f"**Surgery:** {lung_advice[cancer_class]['Surgery']}")
+            st.write(f"**Diets:** {lung_advice[cancer_class]['Diets']}")
 
         # Plotting analysis
         st.write("### Prediction Analysis")
@@ -246,38 +239,42 @@ elif task == "Lung Cancer Detection":
         # Bar plot
         st.write("#### Bar Plot of Prediction Probabilities")
         fig, ax = plt.subplots(figsize=(12, 6))
-        ax.bar(lung_classes, lung_prediction[0], color='#4b0082')
-        ax.set_xlabel('Cancer Type')
+        ax.bar(lung_classes, cancer_prediction[0], color='#4b0082')
+        ax.set_xlabel('Cancer Class')
         ax.set_ylabel('Probability')
-        ax.set_title('Prediction Probabilities for Lung Cancer Types')
+        ax.set_title('Prediction Probabilities for Lung Cancer Detection')
         st.pyplot(fig)
 
-        # Pie plot
+        # Pie chart
         st.write("#### Pie Chart of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        wedges, texts, autotexts = ax.pie(
-            lung_prediction[0],
-            labels=lung_classes,
-            autopct='%1.1f%%',
-            colors=['#4b0082', '#6a0dad', '#800080', '#a020f0'],
-            startangle=140
-        )
-        ax.set_title('Prediction Probabilities for Lung Cancer Types')
-        plt.setp(autotexts, size=10, weight="bold")
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.pie(cancer_prediction[0], labels=lung_classes, autopct='%1.1f%%', colors=['#f8a5c2', '#ff6b81', '#ff4757', '#ff6348'])
+        ax.set_title('Prediction Probabilities for Lung Cancer Detection')
         st.pyplot(fig)
 
-elif task == "View Advice":
-    st.title("General Medical Advice")
+if task == "View Advice":
+    st.title("View Advice")
+    st.write("### Choose a condition to view advice")
 
-    # Display general advice
-    st.write("### General Advice for Health")
-    st.write("**Doctors:** Regular check-ups and consultations with specialists as needed.")
-    st.write("**Medication:** Follow prescribed medication regimes and consult your doctor.")
-    st.write("**Surgery:** Only consider surgical options as recommended by your healthcare provider.")
-    st.write("**Diets:** Maintain a balanced diet with focus on nutrition and overall health.")
+    condition = st.selectbox("Select a condition", ["Knee Osteoarthritis", "Lung Cancer"])
 
-# Sidebar for additional information
-st.sidebar.header("Additional Information")
-st.sidebar.write("For more details on the models used, visit the respective project pages or consult the documentation.")
+    if condition == "Knee Osteoarthritis":
+        severity = st.selectbox("Select severity level", knee_classes)
+        if severity:
+            st.write(f"### Advice for {severity} Severity")
+            st.write(f"**Doctors:** {knee_advice[severity]['Doctors']}")
+            st.write(f"**Medication:** {knee_advice[severity]['Medication']}")
+            st.write(f"**Surgery:** {knee_advice[severity]['Surgery']}")
+            st.write(f"**Diets:** {knee_advice[severity]['Diets']}")
+
+    if condition == "Lung Cancer":
+        cancer_type = st.selectbox("Select cancer type", lung_classes)
+        if cancer_type:
+            st.write(f"### Advice for {cancer_type}")
+            st.write(f"**Doctors:** {lung_advice[cancer_type]['Doctors']}")
+            st.write(f"**Medication:** {lung_advice[cancer_type]['Medication']}")
+            st.write(f"**Surgery:** {lung_advice[cancer_type]['Surgery']}")
+            st.write(f"**Diets:** {lung_advice[cancer_type]['Diets']}")
+
 
 st.write("Made with ❤️ by HealthAI")
