@@ -404,7 +404,7 @@ if task == "Chest Disease Detection":
 st.markdown("""
     <style>
     .stApp {
-        background: linear-gradient(to right, #f8a5c2, #ffffff); /* Gradient from light pink to purple */
+        background: linear-gradient(to right, #f8a5c2, #8A2BE2); /* Gradient from light pink to purple */
     }
     .stTitle {
         color: #4b0082; /* Title color */
