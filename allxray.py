@@ -57,7 +57,7 @@ def create_chest_model():
     return model
 
 knee_model = create_knee_model()
-lung_model = load_model('vgg16_model.h5')
+lung_model = load_model("vgg16_model.h5")
 chest_model = create_chest_model()
 
 # Define class labels and advice
