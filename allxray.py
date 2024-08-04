@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import img_to_array
-# Set up Streamlit page
-st.set_page_config(page_title="Medical Diagnostic App", page_icon="🩺")
+
 
 
 # Define CNN models for knee osteoarthritis, lung cancer, and chest disease detection
