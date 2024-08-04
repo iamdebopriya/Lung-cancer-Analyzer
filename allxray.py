@@ -3,9 +3,10 @@ from PIL import Image
 import tensorflow as tf
 import streamlit as st
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential,load_model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import img_to_array
+
 
 
 
@@ -56,7 +57,7 @@ def create_chest_model():
     return model
 
 knee_model = create_knee_model()
-lung_model = create_lung_model()
+lung_model = load_model('vgg16_model.h5')
 chest_model = create_chest_model()
 
 # Define class labels and advice
@@ -303,12 +304,13 @@ if task == "Lung Cancer Detection":
     # Image uploader for lung X-ray
     uploaded_lung_file = st.file_uploader("Choose a lung X-ray image...", type=["jpg", "png", "jpeg"], key='lung')
 
-    if uploaded_lung_file is not None:
+    
+          if uploaded_lung_file is not None:
         # Preprocess the image
-        image = Image.open(uploaded_lung_file).convert('RGB')
+        image = Image.open(uploaded_lung_file).convert('RGB')  # Convert to RGB
         image = image.resize((150, 150))
         image_array = img_to_array(image) / 255.0
-        image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
+        image_array = np.expand_dims(image_array, axis=0)
 
         # Predict the lung cancer type
         lung_prediction = lung_model.predict(image_array)
@@ -316,9 +318,9 @@ if task == "Lung Cancer Detection":
 
         # Display the uploaded image
         st.image(uploaded_lung_file, caption='Uploaded Lung X-ray Image', use_column_width=True)
-        st.write(f"**Predicted Type:** {lung_class}")
+        st.write(f"**Predicted Cancer Type:** {lung_class}")
 
-        # Provide advice based on lung cancer type
+        # Provide advice based on cancer type
         if lung_class in lung_advice:
             st.write(f"### Advice for {lung_class}")
             st.write(f"**Doctors:** {lung_advice[lung_class]['Doctors']}")
@@ -333,16 +335,23 @@ if task == "Lung Cancer Detection":
         st.write("#### Bar Plot of Prediction Probabilities")
         fig, ax = plt.subplots(figsize=(12, 6))
         ax.bar(lung_classes, lung_prediction[0], color='#4b0082')
-        ax.set_xlabel('Lung Cancer Type')
+        ax.set_xlabel('Cancer Type')
         ax.set_ylabel('Probability')
         ax.set_title('Prediction Probabilities for Lung Cancer Types')
         st.pyplot(fig)
 
-        # Pie chart
+        # Pie plot
         st.write("#### Pie Chart of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.pie(lung_prediction[0], labels=lung_classes, autopct='%1.1f%%', colors=['#f8a5c2', '#ff6b81', '#ff4757', '#ff6348'])
+        fig, ax = plt.subplots(figsize=(12, 6))
+        wedges, texts, autotexts = ax.pie(
+            lung_prediction[0],
+            labels=lung_classes,
+            autopct='%1.1f%%',
+            colors=['#4b0082', '#6a0dad', '#800080', '#a020f0'],
+            startangle=140
+        )
         ax.set_title('Prediction Probabilities for Lung Cancer Types')
+        plt.setp(autotexts, size=10, weight="bold")
         st.pyplot(fig)
 
 if task == "Chest Disease Detection":
