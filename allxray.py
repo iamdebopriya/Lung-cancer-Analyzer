@@ -303,9 +303,7 @@ if task == "Lung Cancer Detection":
 
     # Image uploader for lung X-ray
     uploaded_lung_file = st.file_uploader("Choose a lung X-ray image...", type=["jpg", "png", "jpeg"], key='lung')
-
-    
-          if uploaded_lung_file is not None:
+    if uploaded_lung_file is not None:
         # Preprocess the image
         image = Image.open(uploaded_lung_file).convert('RGB')  # Convert to RGB
         image = image.resize((150, 150))
@@ -353,6 +351,8 @@ if task == "Lung Cancer Detection":
         ax.set_title('Prediction Probabilities for Lung Cancer Types')
         plt.setp(autotexts, size=10, weight="bold")
         st.pyplot(fig)
+    
+        
 
 if task == "Chest Disease Detection":
     st.title("Chest Disease Detection")
