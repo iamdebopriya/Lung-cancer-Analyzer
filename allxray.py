@@ -238,7 +238,7 @@ This application is designed to assist in diagnosing medical conditions from ima
 **Features**:
 - Image upload and preprocessing.
 - Prediction and classification using pre-trained models.
-- Visualization of prediction probabilities with bar and pie charts.
+
 
 - Detailed advice on treatment, medication, and lifestyle changes.
 
