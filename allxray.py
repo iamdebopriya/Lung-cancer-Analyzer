@@ -279,24 +279,7 @@ if task == "Knee Osteoarthritis Detection":
             st.write(f"**Surgery:** {knee_advice[knee_class]['Surgery']}")
             st.write(f"**Diets:** {knee_advice[knee_class]['Diets']}")
 
-        # Plotting analysis
-        st.write("### Prediction Analysis")
-
-        # Bar plot
-        st.write("#### Bar Plot of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        ax.bar(knee_classes, knee_prediction[0], color='#4b0082')
-        ax.set_xlabel('Knee Severity')
-        ax.set_ylabel('Probability')
-        ax.set_title('Prediction Probabilities for Knee Severity')
-        st.pyplot(fig)
-
-        # Pie chart
-        st.write("#### Pie Chart of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.pie(knee_prediction[0], labels=knee_classes, autopct='%1.1f%%', colors=['#f8a5c2', '#ff6b81', '#ff4757', '#ff6348', '#ff4500'])
-        ax.set_title('Prediction Probabilities for Knee Severity')
-        st.pyplot(fig)
+        
 
 if task == "Lung Cancer Detection":
     st.title("Lung Cancer Detection")
@@ -326,32 +309,7 @@ if task == "Lung Cancer Detection":
             st.write(f"**Surgery:** {lung_advice[lung_class]['Surgery']}")
             st.write(f"**Diets:** {lung_advice[lung_class]['Diets']}")
 
-        # Plotting analysis
-        st.write("### Prediction Analysis")
-
-        # Bar plot
-        st.write("#### Bar Plot of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        ax.bar(lung_classes, lung_prediction[0], color='#4b0082')
-        ax.set_xlabel('Cancer Type')
-        ax.set_ylabel('Probability')
-        ax.set_title('Prediction Probabilities for Lung Cancer Types')
-        st.pyplot(fig)
-
-        # Pie plot
-        st.write("#### Pie Chart of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        wedges, texts, autotexts = ax.pie(
-            lung_prediction[0],
-            labels=lung_classes,
-            autopct='%1.1f%%',
-            colors=['#4b0082', '#6a0dad', '#800080', '#a020f0'],
-            startangle=140
-        )
-        ax.set_title('Prediction Probabilities for Lung Cancer Types')
-        plt.setp(autotexts, size=10, weight="bold")
-        st.pyplot(fig)
-    
+        
         
 
 if task == "Chest Disease Detection":
@@ -383,24 +341,7 @@ if task == "Chest Disease Detection":
             st.write(f"**Surgery:** {chest_advice[chest_class]['Surgery']}")
             st.write(f"**Diets:** {chest_advice[chest_class]['Diets']}")
 
-        # Plotting analysis
-        st.write("### Prediction Analysis")
-
-        # Bar plot
-        st.write("#### Bar Plot of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        ax.bar(chest_classes, chest_prediction[0], color='#4b0082')
-        ax.set_xlabel('Chest Disease Type')
-        ax.set_ylabel('Probability')
-        ax.set_title('Prediction Probabilities for Chest Disease Types')
-        st.pyplot(fig)
-
-        # Pie chart
-        st.write("#### Pie Chart of Prediction Probabilities")
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.pie(chest_prediction[0], labels=chest_classes, autopct='%1.1f%%', colors=['#f8a5c2', '#ff6b81', '#ff4757', '#ff6348', '#ff4500', '#ff3030', '#ff0000', '#cd0000', '#8b0000', '#a52a2a', '#b22222', '#dc143c', '#e9967a', '#fa8072'])
-        ax.set_title('Prediction Probabilities for Chest Disease Types')
-        st.pyplot(fig)
+       
 st.markdown("""
     <style>
     .stApp {
